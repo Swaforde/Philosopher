@@ -14,7 +14,14 @@
 
 int	main(int argc, char **argv)
 {
-	t_arguments arguments;
-	arguments = parsing(argc, argv);
+	t_infos infos;
+
+	infos = parsing(argc, argv);
+	printf("nop : %d\n", infos.nop);
+	printf("ttd : %d\n", infos.ttd);
+	printf("ttw : %d\n", infos.tte);
+	printf("tts : %d\n", infos.tts);
+	if (argc > 5)
+		printf("minimum_eat : %d", infos.minimum_eat);
 	return (1);
 }

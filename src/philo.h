@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIHLO_H
+#ifndef PHILO_H
 # define PHILO_H
 
 # include "../Libft/libft.h"
@@ -20,14 +20,23 @@
 # include <unistd.h>
 # include <time.h>
 
-typedef struct s_arguments {
+typedef struct s_infos {
 	int nop;
 	int ttd;
 	int tte;
 	int tts;
 	int minimum_eat;
-} t_arguments;
+} t_infos;
 
-t_arguments	parsing(int argc, char **argv);
+typedef struct s_philosopher {
+	int id;
+	int is_eating;
+	long int last_eat;
+	struct t_arguments *arguments;
+	pthread_t pthread;
+
+} t_philosopher;
+
+t_infos	parsing(int argc, char **argv);
 
 #endif
