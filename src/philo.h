@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbouvera <tbouvera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,11 +10,24 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#ifndef PIHLO_H
+# define PHILO_H
 
-int	main(int argc, char **argv)
-{
-	t_arguments arguments;
-	arguments = parsing(argc, argv);
-	return (1);
-}
+# include "../Libft/libft.h"
+# include <stdio.h>
+# include <stdlib.h>
+# include <pthread.h>
+# include <unistd.h>
+# include <time.h>
+
+typedef struct s_arguments {
+	int nop;
+	int ttd;
+	int tte;
+	int tts;
+	int minimum_eat;
+} t_arguments;
+
+t_arguments	parsing(int argc, char **argv);
+
+#endif
