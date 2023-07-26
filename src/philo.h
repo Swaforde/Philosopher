@@ -38,5 +38,6 @@ typedef struct s_philosopher {
 } t_philosopher;
 
 t_infos	parsing(int argc, char **argv);
+int checker(char **argv, int argc);
 
 #endif

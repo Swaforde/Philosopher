@@ -15,13 +15,16 @@
 int	main(int argc, char **argv)
 {
 	t_infos infos;
+	t_philosopher *philosopher;
 
 	infos = parsing(argc, argv);
-	printf("nop : %d\n", infos.nop);
-	printf("ttd : %d\n", infos.ttd);
-	printf("ttw : %d\n", infos.tte);
-	printf("tts : %d\n", infos.tts);
-	if (argc > 5)
-		printf("minimum_eat : %d", infos.minimum_eat);
+	if (checker(argv, argc) == 0)
+	{
+		ft_printf("error\n");
+		return (0);
+	}
+	philosopher = malloc(sizeof(t_philosopher) * infos.nop);
+	if (philosopher == NULL)
+		return (0);
 	return (1);
 }

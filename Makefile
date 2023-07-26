@@ -1,5 +1,5 @@
 NAME = philosopher
-SRCS = src/main.c src/parsing.c src/init.c
+SRCS = src/main.c src/parsing.c src/init.c src/checker.c
 
 OBJS = ${SRCS:.c=.o}
 CC = gcc
