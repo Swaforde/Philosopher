@@ -21,23 +21,33 @@
 # include <time.h>
 
 typedef struct s_infos {
-	int nop;
-	int ttd;
-	int tte;
-	int tts;
-	int minimum_eat;
+	int	dead;
+	int finished;
+	int64_t nop;
+	int64_t ttd;
+	int64_t tte;
+	int64_t tts;
+	int64_t minimum_eat;
+	pthread_mutex_t *forks;
+	pthread_mutex_t lock;
+	pthread_mutex_t write;
 } t_infos;
 
 typedef struct s_philosopher {
 	int id;
 	int is_eating;
+	int status;
+	int eats_count;
+	int64_t time_to_die;
 	long int last_eat;
 	struct t_arguments *arguments;
-	pthread_t pthread;
+	pthread_mutex_t *r_fork;
+	pthread_mutex_t *l_fork;
 
 } t_philosopher;
 
 t_infos	parsing(int argc, char **argv);
-int checker(char **argv, int argc);
+int	checker(char **argv, int argc);
+void init(t_infos *infos);
 
 #endif

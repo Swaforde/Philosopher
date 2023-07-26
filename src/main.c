@@ -15,7 +15,7 @@
 int	main(int argc, char **argv)
 {
 	t_infos infos;
-	t_philosopher *philosopher;
+	t_philosopher *philosopher_list;
 
 	infos = parsing(argc, argv);
 	if (checker(argv, argc) == 0)
@@ -23,8 +23,10 @@ int	main(int argc, char **argv)
 		ft_printf("error\n");
 		return (0);
 	}
-	philosopher = malloc(sizeof(t_philosopher) * infos.nop);
-	if (philosopher == NULL)
+	philosopher_list = malloc(sizeof(t_philosopher) * infos.nop);
+	if (philosopher_list == NULL)
 		return (0);
+	init(&infos);
+	printf("(%d)", infos.finished);
 	return (1);
 }
