@@ -23,11 +23,12 @@
 typedef struct s_infos {
 	int	dead;
 	int finished;
-	int64_t nop;
+	int nop;
 	int64_t ttd;
 	int64_t tte;
 	int64_t tts;
 	int64_t minimum_eat;
+	struct s_philosopher *philos;
 	pthread_mutex_t *forks;
 	pthread_mutex_t lock;
 	pthread_mutex_t write;
@@ -40,7 +41,8 @@ typedef struct s_philosopher {
 	int eats_count;
 	int64_t time_to_die;
 	long int last_eat;
-	struct t_arguments *arguments;
+	t_infos *infos;
+	pthread_mutex_t	lock;
 	pthread_mutex_t *r_fork;
 	pthread_mutex_t *l_fork;
 
