@@ -1,5 +1,5 @@
 NAME = philosopher
-SRCS = src/main.c src/parsing.c src/init.c src/checker.c src/thread.c
+SRCS = src/main.c src/parsing.c src/init.c src/checker.c src/thread.c src/utils.c
 OBJS = $(addprefix obj/, $(notdir $(SRCS:.c=.o)))
 CC = gcc
 RM = rm -f
@@ -12,8 +12,7 @@ OBJ_DIR = obj
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(MAKE) bonus -C ./Libft
-	$(CC) $(OBJS) $(CFLAGS) ./Libft/libft.a -o $(NAME) -G3
+	$(CC) $(OBJS) $(CFLAGS) -o $(NAME) -G3
 
 $(OBJ_DIR)/%.o : src/%.c
 	@mkdir -p $(OBJ_DIR)
@@ -21,7 +20,6 @@ $(OBJ_DIR)/%.o : src/%.c
 
 clean:
 	$(RM) -r obj/*
-	make fclean -C ./Libft
 
 fclean: clean
 	$(RM) $(NAME)

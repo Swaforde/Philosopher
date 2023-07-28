@@ -13,7 +13,6 @@
 #ifndef PHILO_H
 # define PHILO_H
 
-# include "../Libft/libft.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <pthread.h>
@@ -46,7 +45,10 @@ typedef struct s_philosopher {
 } t_philosopher;
 
 t_infos	parsing(int argc, char **argv);
+int	ft_atoi(const char *str);
+int	ft_isdigit(int c);
 int	checker(char **argv, int argc);
 int init(t_infos *infos);
+int	ft_strlen(const char *str);
 
 #endif

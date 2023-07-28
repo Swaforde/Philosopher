@@ -19,7 +19,7 @@ int	main(int argc, char **argv)
 	infos = parsing(argc, argv);
 	if (checker(argv, argc) == 0)
 	{
-		ft_printf("error\n");
+		printf("error\n");
 		return (0);
 	}
 	if (init(&infos) == 0)

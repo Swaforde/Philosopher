@@ -2,5 +2,5 @@
 
 void	*routine (void * data)
 {
-
+	return (NULL);
 }
