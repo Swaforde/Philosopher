@@ -18,8 +18,9 @@ int	init_philos(t_infos *infos)
 		infos->philos[i].status = 0;
 		infos->philos[i].r_fork = &infos->forks[i];
 		infos->philos[i].l_fork = &infos->forks[(i + 1) % infos->nop];
-        i++;
-    }
+		pthread_create(&infos->philos[i].thread, NULL, routine, &infos->philos[i]);
+		i++;
+	}
 	return (1);
 }
 
@@ -41,11 +42,19 @@ int	init_forks(t_infos *infos)
 
 int	init(t_infos *infos)
 {
+	int	i;
+
+	i = 0;
 	infos->dead = 0;
 	infos->finished = 0;
 	if (init_forks(infos) == 0)
 		return (0);
 	if (init_philos(infos) == 0)
 		return (0);
+	while (i < infos->nop)
+	{
+		pthread_join(infos->philos[i].thread, NULL);
+		i ++;
+	}
 	return (1);
 }

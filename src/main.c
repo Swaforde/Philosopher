@@ -19,7 +19,7 @@ int	main(int argc, char **argv)
 	infos = parsing(argc, argv);
 	if (checker(argv, argc) == 0)
 	{
-		printf("error\n");
+		printf(RED_COLOR "error\n" RESET_COLOR);
 		return (0);
 	}
 	if (init(&infos) == 0)

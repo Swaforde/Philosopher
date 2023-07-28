@@ -19,6 +19,15 @@
 # include <unistd.h>
 # include <time.h>
 
+# define RESET_COLOR "\033[0m"
+# define RED_COLOR "\033[31m"
+# define GREEN_COLOR "\033[32m"
+# define YELLOW_COLOR "\033[33m"
+# define BLUE_COLOR "\033[34m"
+# define MAGENTA_COLOR "\033[35m"
+# define CYAN_COLOR "\033[36m"
+# define WHITE_COLOR "\033[37m"
+
 typedef struct s_infos {
 	int	dead;
 	int finished;
@@ -39,6 +48,7 @@ typedef struct s_philosopher {
 	int64_t time_to_die;
 	long int last_eat;
 	t_infos *infos;
+	pthread_t thread;
 	pthread_mutex_t *r_fork;
 	pthread_mutex_t *l_fork;
 
@@ -50,5 +60,6 @@ int	ft_isdigit(int c);
 int	checker(char **argv, int argc);
 int init(t_infos *infos);
 int	ft_strlen(const char *str);
+void *routine(void * data);
 
 #endif
