@@ -40,7 +40,6 @@ typedef struct s_philosopher {
 	int64_t time_to_die;
 	long int last_eat;
 	t_infos *infos;
-	pthread_mutex_t	lock;
 	pthread_mutex_t *r_fork;
 	pthread_mutex_t *l_fork;
 
