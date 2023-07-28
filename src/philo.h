@@ -30,8 +30,6 @@ typedef struct s_infos {
 	int64_t minimum_eat;
 	struct s_philosopher *philos;
 	pthread_mutex_t *forks;
-	pthread_mutex_t lock;
-	pthread_mutex_t write;
 } t_infos;
 
 typedef struct s_philosopher {
@@ -50,6 +48,6 @@ typedef struct s_philosopher {
 
 t_infos	parsing(int argc, char **argv);
 int	checker(char **argv, int argc);
-void init(t_infos *infos);
+int init(t_infos *infos);
 
 #endif

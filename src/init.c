@@ -1,10 +1,14 @@
 #include "philo.h"
 
-void init_philos(t_infos *infos)
+int	init_philos(t_infos *infos)
 {
     int i;
 
     i = 0;
+
+	infos->philos = malloc(sizeof(t_philosopher) * infos->nop);
+	if (infos->philos == NULL)
+		return (0);
     while (i < infos->nop)
     {
         infos->philos[i].infos = infos;
@@ -16,14 +20,32 @@ void init_philos(t_infos *infos)
         pthread_mutex_init(&infos->philos[i].lock, NULL);
         i++;
     }
+	return (1);
 }
 
-void init(t_infos *infos)
+int	init_forks(t_infos *infos)
 {
-    infos->dead = 0;
-    infos->finished = 0;
+	int i;
 
-    pthread_mutex_init(&infos->write, NULL);
-    pthread_mutex_init(&infos->lock, NULL);
-    init_philos(infos);
+	i = 0;
+	infos->forks = malloc (sizeof(pthread_mutex_t) * infos->nop);
+	if (!infos->forks)
+		return (0);
+	while (i < infos->nop)
+	{
+		pthread_mutex_init(&infos->forks[i], NULL);
+		i ++;
+	}
+	return (1);
+}
+
+int	init(t_infos *infos)
+{
+	infos->dead = 0;
+	infos->finished = 0;
+	if (init_philos(infos) == 0)
+		return (0);
+	if (init_forks(infos) == 0)
+		return (0);
+	return (1);
 }

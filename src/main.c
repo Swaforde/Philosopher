@@ -22,9 +22,7 @@ int	main(int argc, char **argv)
 		ft_printf("error\n");
 		return (0);
 	}
-	infos.philos = malloc(sizeof(t_philosopher) * infos.nop);
-	if (infos.philos == NULL)
+	if (init(&infos) == 0)
 		return (0);
-	init(&infos);
 	return (1);
 }
