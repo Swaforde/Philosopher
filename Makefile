@@ -1,11 +1,11 @@
 NAME = philosopher
 SRCS = src/main.c src/parsing.c src/init.c src/checker.c
-OBJS = $(addprefix OBJ/, $(notdir $(SRCS:.c=.o)))
+OBJS = $(addprefix obj/, $(notdir $(SRCS:.c=.o)))
 CC = gcc
 RM = rm -f
 CFLAGS = -Wall -Wextra -Werror
 
-OBJ_DIR = OBJ
+OBJ_DIR = obj
 
 .PHONY: all clean fclean re
 
@@ -20,7 +20,7 @@ $(OBJ_DIR)/%.o : src/%.c
 	$(CC) -c $< -o $@
 
 clean:
-	$(RM) -r $(OBJ_DIR)
+	$(RM) -r obj/*
 	make fclean -C ./Libft
 
 fclean: clean
