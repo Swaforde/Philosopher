@@ -51,7 +51,6 @@ typedef struct s_philosopher {
 	pthread_t thread;
 	pthread_mutex_t *r_fork;
 	pthread_mutex_t *l_fork;
-
 } t_philosopher;
 
 t_infos	parsing(int argc, char **argv);
