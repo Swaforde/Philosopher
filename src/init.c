@@ -1,60 +1,27 @@
 #include "philo.h"
 
-int	init_philos(t_infos *infos)
-{
-	int i;
+t_table *init_table(int argc, char **argv) {
+    t_table *table = malloc(sizeof(t_table));
+    if (!table) return NULL;
 
-	i = 0;
-	infos->philos = malloc(sizeof(t_philosopher) * infos->nop);
-	if (infos->philos == NULL)
-		return (0);
-	while (i < infos->nop)
-	{
-		infos->philos[i].infos = infos;
-		infos->philos[i].id = i;
-		infos->philos[i].time_to_die = infos->ttd;
-		infos->philos[i].eats_count = 0;
-		infos->philos[i].is_eating = 0;
-		infos->philos[i].status = 0;
-		infos->philos[i].r_fork = &infos->forks[i];
-		infos->philos[i].l_fork = &infos->forks[(i + 1) % infos->nop];
-		pthread_create(&infos->philos[i].thread, NULL, routine, &infos->philos[i]);
-		i++;
-	}
-	return (1);
-}
+    table->start_time = get_current_time_ms();
+    table->num_of_philosophers = atoi(argv[1]);
+    table->time_to_die = atoll(argv[2]);
+    table->time_to_eat = atoll(argv[3]);
+    table->time_to_sleep = atoll(argv[4]);
+    table->num_of_times_each_philosopher_must_eat = (argc == 6) ? atoi(argv[5]) : -1;
 
-int	init_forks(t_infos *infos)
-{
-	int i;
+    table->philosophers = malloc(sizeof(t_philosopher) * table->num_of_philosophers);
+    table->forks = malloc(sizeof(t_fork) * table->num_of_philosophers);
+    if (!table->philosophers || !table->forks) return NULL;
 
-	i = 0;
-	infos->forks = malloc (sizeof(pthread_mutex_t) * infos->nop);
-	if (!infos->forks)
-		return (0);
-	while (i < infos->nop)
-	{
-		pthread_mutex_init(&infos->forks[i], NULL);
-		i ++;
-	}
-	return (1);
-}
+    for (int i = 0; i < table->num_of_philosophers; i++) {
+        table->philosophers[i].id = i + 1;
+        table->philosophers[i].last_meal_time = 0;
+        table->philosophers[i].left_fork = &table->forks[i];
+        table->philosophers[i].right_fork = &table->forks[(i + 1) % table->num_of_philosophers];
+        pthread_mutex_init(&table->forks[i].mutex, NULL);
+    }
 
-int	init(t_infos *infos)
-{
-	int	i;
-
-	i = 0;
-	infos->dead = 0;
-	infos->finished = 0;
-	if (init_forks(infos) == 0)
-		return (0);
-	if (init_philos(infos) == 0)
-		return (0);
-	while (i < infos->nop)
-	{
-		pthread_join(infos->philos[i].thread, NULL);
-		i ++;
-	}
-	return (1);
+    return table;
 }

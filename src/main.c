@@ -12,17 +12,36 @@
 
 #include "philo.h"
 
-int	main(int argc, char **argv)
-{
-	t_infos infos;
+int	main(int argc, char **argv) {
+    t_table table;
+    table.num_of_philosophers = 5;
+    table.time_to_eat = 200;
+    table.time_to_sleep = 150;
+    
+    table.time_to_die = 100;
 
-	infos = parsing(argc, argv);
-	if (checker(argv, argc) == 0)
-	{
-		printf(RED_COLOR "error\n" RESET_COLOR);
-		return (0);
+	pthread_t *threads = malloc(sizeof(pthread_t) * table.num_of_philosophers);
+	pthread_t *monitor_threads = malloc(sizeof(pthread_t) * table.num_of_philosophers);
+
+	t_philo_context *philosophers_context = malloc(sizeof(t_philo_context) * table.num_of_philosophers);
+
+	if (!threads || !philosophers_context || !monitor_threads) exit(1);
+
+
+	for (int i = 0; i < table.num_of_philosophers; i++) {
+		philosophers_context[i].philosopher = &table.philosophers[i];
+		philosophers_context[i].table = &table;
+
+		pthread_create(&threads[i], NULL, &philosopher_routine, &philosophers_context[i]);
+		pthread_create(&monitor_threads[i], NULL, &monitor_routine, &philosophers_context[i]);
 	}
-	if (init(&infos) == 0)
-		return (0);
-	return (1);
+
+	for (int i = 0; i < table.num_of_philosophers; i++) {
+		pthread_join(threads[i], NULL);
+		pthread_join(monitor_threads[i], NULL);
+	}
+
+	free(philosophers_context);
+	free(threads);
+	free(monitor_threads);
 }

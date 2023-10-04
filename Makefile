@@ -1,5 +1,5 @@
 NAME = philosopher
-SRCS = src/main.c src/parsing.c src/init.c src/checker.c src/thread.c src/utils.c
+SRCS = src/main.c src/init.c src/log.c src/philo_behaviour.c
 OBJS = $(addprefix obj/, $(notdir $(SRCS:.c=.o)))
 CC = gcc
 RM = rm -f

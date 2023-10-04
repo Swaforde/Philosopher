@@ -28,37 +28,37 @@
 # define CYAN_COLOR "\033[36m"
 # define WHITE_COLOR "\033[37m"
 
-typedef struct s_infos {
-	int	dead;
-	int finished;
-	int nop;
-	int64_t ttd;
-	int64_t tte;
-	int64_t tts;
-	int64_t minimum_eat;
-	struct s_philosopher *philos;
-	pthread_mutex_t *forks;
-} t_infos;
+typedef struct s_fork {
+    pthread_mutex_t mutex;
+}              t_fork;
 
 typedef struct s_philosopher {
-	int id;
-	int is_eating;
-	int status;
-	int eats_count;
-	int64_t time_to_die;
-	long int last_eat;
-	t_infos *infos;
-	pthread_t thread;
-	pthread_mutex_t *r_fork;
-	pthread_mutex_t *l_fork;
-} t_philosopher;
+    int             id;
+    long long       last_meal_time;
+    t_fork          *left_fork;
+    t_fork          *right_fork;
+}              t_philosopher;
 
-t_infos	parsing(int argc, char **argv);
-int	ft_atoi(const char *str);
-int	ft_isdigit(int c);
-int	checker(char **argv, int argc);
-int init(t_infos *infos);
-int	ft_strlen(const char *str);
-void *routine(void * data);
+typedef struct s_table {
+    int             num_of_philosophers;
+    long long       time_to_die;
+    long long       time_to_eat;
+    long long       time_to_sleep;
+    int             num_of_times_each_philosopher_must_eat;
+    long long       start_time;
+    t_philosopher   *philosophers;
+    t_fork          *forks;
+}              t_table;
+
+
+typedef struct  s_philo_context {
+    t_philosopher *philosopher;
+    t_table      *table;
+}               t_philo_context;
+
+void *philosopher_routine(void *arg);
+void *monitor_routine(void *arg);
+long long get_current_time_ms();
+void log_action(t_philosopher *philosopher, const char *action);
 
 #endif
