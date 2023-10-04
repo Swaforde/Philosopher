@@ -4,12 +4,15 @@ t_table *init_table(int argc, char **argv) {
     t_table *table = malloc(sizeof(t_table));
     if (!table) return NULL;
 
+
     table->start_time = get_current_time_ms();
-    table->num_of_philosophers = atoi(argv[1]);
-    table->time_to_die = atoll(argv[2]);
-    table->time_to_eat = atoll(argv[3]);
-    table->time_to_sleep = atoll(argv[4]);
-    table->num_of_times_each_philosopher_must_eat = (argc == 6) ? atoi(argv[5]) : -1;
+    table->num_of_philosophers = 3;
+    table->time_to_die = 500;
+    table->time_to_eat = 100;
+    table->time_to_sleep = 150;
+    pthread_mutex_init(&table->end_mutex, NULL);
+    table->philosophers_done = 0;
+    table->num_of_times_each_philosopher_must_eat = 2;
 
     table->philosophers = malloc(sizeof(t_philosopher) * table->num_of_philosophers);
     table->forks = malloc(sizeof(t_fork) * table->num_of_philosophers);

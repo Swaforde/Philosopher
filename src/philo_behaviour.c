@@ -14,6 +14,8 @@ void eat(t_philosopher *philosopher, t_table *table) {
     pthread_mutex_unlock(&philosopher->left_fork->mutex);
     pthread_mutex_unlock(&philosopher->right_fork->mutex);
     log_action(philosopher, "has dropped the forks");
+
+    philosopher->meals_eaten++;
 }
 
 void sleep_and_think(t_philosopher *philosopher, t_table *table) {
@@ -28,15 +30,22 @@ void *monitor_routine(void *arg) {
     t_table *table = context->table;
 
     while (1) {
-        usleep(100); // Pour éviter de surcharger le CPU
+        usleep(100);
 
         if (get_current_time_ms() - philosopher->last_meal_time > table->time_to_die) {
             log_action(philosopher, "has died");
-            exit(1); // Cela arrêtera tout le programme, mais c'est l'une des exigences du projet.
+            exit(1);
         }
-
-        if (table->num_of_times_each_philosopher_must_eat != -1) {
+        if (table->num_of_times_each_philosopher_must_eat != -1 && 
+            philosopher->meals_eaten >= table->num_of_times_each_philosopher_must_eat) {
             log_action(philosopher, "has eaten enough times");
+            pthread_mutex_lock(&table->end_mutex);
+            table->philosophers_done++;
+
+            if (table->philosophers_done >= table->num_of_philosophers) {
+                exit(0);
+            }
+            pthread_mutex_unlock(&table->end_mutex);
         }
     }
     return (NULL);
