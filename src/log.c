@@ -14,7 +14,7 @@
 #include <sys/time.h>
 #include <stdio.h>
 
-long long	get_current_time_ms(void)
+long long	get_time(void)
 {
 	struct timeval	ct;
 
@@ -26,6 +26,6 @@ void	log_action(t_philosopher *philosopher, const char *action)
 {
 	long long	timestamp;
 
-	timestamp = get_current_time_ms() - philosopher->last_meal_time;
+	timestamp = get_time() - philosopher->last_meal_time;
 	printf("[%lld] Philosopher %d %s\n", timestamp, philosopher->id, action);
 }

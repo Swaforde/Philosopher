@@ -17,32 +17,30 @@ int	main(int argc, char **argv)
 	int				i;
 	t_table			*table;
 	pthread_t		*threads;
-	pthread_t		*monitor_threads;
-	t_philo_context	*philosophers_context;
+	pthread_t		*monitor;
+	t_philo_context	*philo_data;
 
 	i = 0;
 	table = init_table(argc, argv);
-	threads = malloc(sizeof(pthread_t) * table->num_of_philosophers);
-	monitor_threads = malloc(sizeof(pthread_t) * table->num_of_philosophers);
-	philosophers_context = malloc(sizeof(t_philo_context) * table->num_of_philosophers);
-	if (!threads || !philosophers_context || !monitor_threads)
+	threads = malloc(sizeof(pthread_t) * table->n_p);
+	monitor = malloc(sizeof(pthread_t) * table->n_p);
+	philo_data = malloc(sizeof(t_philo_context) * table->n_p);
+	if (!threads || !philo_data || !monitor)
 		exit(1);
-	while (i < table->num_of_philosophers)
+	while (i < table->n_p)
 	{
-		philosophers_context[i].philosopher = &table->philosophers[i];
-		philosophers_context[i].table = table;
-		pthread_create(&threads[i], NULL, &philosopher_routine, &philosophers_context[i]);
-		pthread_create(&monitor_threads[i], NULL, &monitor_routine, &philosophers_context[i]);
+		philo_data[i].philosopher = &table->philosophers[i];
+		philo_data[i].table = table;
+		pthread_create(&threads[i], NULL, &philo_routine, &philo_data[i]);
+		pthread_create(&monitor[i], NULL, &monitor_routine, &philo_data[i]);
 		i ++;
 	}
 	i = 0;
-	while (i < table->num_of_philosophers)
+	while (i < table->n_p)
 	{
 		pthread_join(threads[i], NULL);
-		pthread_join(monitor_threads[i], NULL);
+		pthread_join(monitor[i], NULL);
 		i ++;
 	}
-	free(philosophers_context);
-	free(threads);
-	free(monitor_threads);
+	exit(0);
 }
