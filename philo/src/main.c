@@ -12,7 +12,27 @@
 
 #include "philo.h"
 
+void	free_table(t_table *table)
+{
+	int	i;
 
+	if (!table)
+		return ;
+	if (table->forks)
+	{
+		i = 0;
+		while (i < table->n_p)
+		{
+			pthread_mutex_destroy(&table->forks[i].mutex);
+			i++;
+		}
+		free(table->forks);
+	}
+	if (table->philosophers)
+		free(table->philosophers);
+	pthread_mutex_destroy(&table->end_mutex);
+	free(table);
+}
 
 int	main(int argc, char **argv)
 {
@@ -21,7 +41,6 @@ int	main(int argc, char **argv)
 	pthread_t		*threads;
 	pthread_t		*monitor;
 	t_philo_context	*philo_data;
-
 
 	if (arg_check(argc, argv) == 0) {
 		return (0);
@@ -48,5 +67,9 @@ int	main(int argc, char **argv)
 		pthread_join(threads[i], NULL);
 		i ++;
 	}
+	free (threads);
+	free (monitor);
+	free_table(table);
+	free (philo_data);
 	return (1);
 }
