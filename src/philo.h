@@ -32,15 +32,20 @@ typedef struct s_fork {
     pthread_mutex_t mutex;
 }              t_fork;
 
+typedef struct s_table t_table;
+
 typedef struct s_philosopher {
+    int             died;
     int             id;
     long long       last_meal_time;
     int             meals_eaten;
     t_fork          *left_fork;
     t_fork          *right_fork;
+    t_table         *table;
 }              t_philosopher;
 
 typedef struct s_table {
+    int             stop;
     int             philosophers_done;
     pthread_mutex_t end_mutex;
     int             n_p;
@@ -62,7 +67,9 @@ typedef struct  s_philo_context {
 void *philo_routine(void *arg);
 void *monitor_routine(void *arg);
 long long get_time();
-void log_action(t_philosopher *philosopher, const char *action);
+int	ft_atoi(const char *str);
+void log_action(t_philosopher *philosopher, const char *action, t_table *table);
 t_table *init_table(int argc, char **argv);
+int	arg_check(int argc, char **argv);
 
 #endif

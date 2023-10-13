@@ -20,14 +20,19 @@ t_table	*init_table (int argc, char **argv)
 	table = malloc(sizeof(t_table));
 	if (!table)
 		return (NULL);
+	table->stop = 0;
 	table->start_time = get_time();
-	table->n_p = 3;
-	table->time_to_die = 400;
-	table->time_to_eat = 100;
-	table->time_to_sleep = 150;
+	table->n_p = ft_atoi(argv[1]);
+	table->time_to_die = ft_atoi(argv[2]);
+	table->time_to_eat = ft_atoi(argv[3]);
+	table->time_to_sleep = ft_atoi(argv[4]);
+	table->start_time = get_time();
 	pthread_mutex_init(&table->end_mutex, NULL);
 	table->philosophers_done = 0;
-	table->max_eat = 2;
+	if (argc == 6)
+		table->max_eat = ft_atoi(argv[5]);
+	else
+		table->max_eat = -1;
 	table->philosophers = malloc(sizeof(t_philosopher) * table->n_p);
 	table->forks = malloc(sizeof(t_fork) * table->n_p);
 	if (!table->philosophers || !table->forks)
@@ -35,6 +40,8 @@ t_table	*init_table (int argc, char **argv)
 	i = 0;
 	while (i < table->n_p)
 	{
+		table->philosophers[i].meals_eaten = 0;
+		table->philosophers[i].died = 0;
 		table->philosophers[i].id = i + 1;
 		table->philosophers[i].last_meal_time = 0;
 		table->philosophers[i].left_fork = &table->forks[i];

@@ -12,62 +12,94 @@
 
 #include "philo.h"
 
-void	eat(t_philosopher *philosopher, t_table *table)
+void eat(t_philosopher *philosopher, t_table *table)
 {
-	pthread_mutex_lock(&philosopher->left_fork->mutex);
-	log_action(philosopher, "has taken a left fork");
-	pthread_mutex_lock(&philosopher->right_fork->mutex);
-	log_action(philosopher, "has taken a right fork");
-	log_action(philosopher, "is eating");
-	usleep(table->time_to_eat * 1000);
-	philosopher->last_meal_time = get_time();
-	pthread_mutex_unlock(&philosopher->left_fork->mutex);
-	pthread_mutex_unlock(&philosopher->right_fork->mutex);
-	log_action(philosopher, "has dropped the forks");
-	philosopher->meals_eaten++;
+    if (philosopher->id % 2 != 0)
+	{    
+        pthread_mutex_lock(&philosopher->left_fork->mutex);
+        if (table->stop != 1)
+            log_action(philosopher, "has taken a fork", table);
+        pthread_mutex_lock(&philosopher->right_fork->mutex);
+        if (table->stop != 1)
+            log_action(philosopher, "has taken a fork", table);
+    } else
+	{
+        pthread_mutex_lock(&philosopher->right_fork->mutex);
+        if (table->stop != 1)
+            log_action(philosopher, "has taken a fork", table);
+        pthread_mutex_lock(&philosopher->left_fork->mutex);
+        if (table->stop != 1)
+            log_action(philosopher, "has taken a fork", table);
+    }
+    if (table->stop != 1)
+        log_action(philosopher, "is eating", table);
+    usleep(table->time_to_eat * 1000);
+    philosopher->last_meal_time = get_time();
+    pthread_mutex_unlock(&philosopher->left_fork->mutex);
+    pthread_mutex_unlock(&philosopher->right_fork->mutex);
+    philosopher->meals_eaten++;
 }
+
+
+
 
 void	sleep_and_think(t_philosopher *philosopher, t_table *table)
 {
-	log_action(philosopher, "is sleeping");
+	if (table->stop != 1) {
+		log_action(philosopher, "is sleeping", table);
+	}
 	usleep(table->time_to_sleep * 1000);
-	log_action(philosopher, "is thinking");
+	if (table->stop != 1) {
+		log_action(philosopher, "is thinking", table);
+	}
 }
 
-void	monitor_loop(t_philosopher *philo, t_table *table)
+void	monitor_loop(t_table *table)
 {
+	int i;
+	int x;
+
+	i = 0;
+	x = 0;
 	while (1)
 	{
 		usleep(100);
-		if (get_time() - philo->last_meal_time > table->time_to_die)
+		while (x < table->n_p)
 		{
-			log_action(philo, "has died");
-			exit(1);
-		}
-		if (table->max_eat != -1 && philo->meals_eaten >= table->max_eat)
-		{
-			log_action(philo, "has eaten enough times");
-			pthread_mutex_lock(&table->end_mutex);
-			table->philosophers_done++;
-			if (table->philosophers_done >= table->n_p)
+			t_philosopher philo = table->philosophers[x];
+
+			if (get_time() - philo.last_meal_time > table->time_to_die)
 			{
-				exit(0);
+				if (table->stop == 0) {
+					log_action(&philo, "died", table);
+					while (i < table->n_p) {
+						table->philosophers[i].died = 1;
+						i ++;
+					}
+					table->stop = 1;
+				}
+				return ;
 			}
-			pthread_mutex_unlock(&table->end_mutex);
+			if (table->max_eat != -1 && philo.meals_eaten >= table->max_eat)
+			{
+				pthread_mutex_lock(&table->end_mutex);
+				table->philosophers_done++;
+				if (table->philosophers_done >= table->n_p)
+					return ;
+				pthread_mutex_unlock(&table->end_mutex);
+			}
+			x ++;
 		}
+		x = 0;
 	}
 }
 
 void	*monitor_routine(void *arg)
 {
-	t_philo_context	*context;
-	t_philosopher	*philosopher;
 	t_table			*table;
 
-	context = (t_philo_context *)arg;
-	philosopher = context->philosopher;
-	table = context->table;
-	monitor_loop(philosopher, table);
+	table = (t_table *)arg;
+	monitor_loop(table);
 	return (NULL);
 }
 
@@ -81,9 +113,10 @@ void	*philo_routine(void *arg)
 	philosopher = context->philosopher;
 	table = context->table;
 	philosopher->last_meal_time = get_time();
-	while (1)
+	while (philosopher->died != 1 && (philosopher->meals_eaten < table->max_eat || table->max_eat == -1))
 	{
 		eat(philosopher, table);
 		sleep_and_think(philosopher, table);
 	}
+	return (NULL);
 }

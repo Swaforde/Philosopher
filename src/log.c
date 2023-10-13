@@ -22,10 +22,15 @@ long long	get_time(void)
 	return ((long long)(ct.tv_sec * 1000 + ct.tv_usec / 1000));
 }
 
-void	log_action(t_philosopher *philosopher, const char *action)
+long long	get_time_since_start(t_table *table)
+{
+	return (get_time() - table->start_time);
+}
+
+void	log_action(t_philosopher *philosopher, const char *action, t_table *table)
 {
 	long long	timestamp;
 
-	timestamp = get_time() - philosopher->last_meal_time;
-	printf("[%lld] Philosopher %d %s\n", timestamp, philosopher->id, action);
+	timestamp = get_time_since_start(table);
+	printf("%lldms %d %s\n", timestamp, philosopher->id, action);
 }
