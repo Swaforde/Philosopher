@@ -48,5 +48,5 @@ int	main(int argc, char **argv)
 		pthread_join(threads[i], NULL);
 		i ++;
 	}
-	exit(0);
+	return (1);
 }

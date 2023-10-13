@@ -3,7 +3,7 @@ SRCS = src/main.c src/init.c src/log.c src/philo_behaviour.c src/utils.c
 OBJS = $(addprefix obj/, $(notdir $(SRCS:.c=.o)))
 CC = gcc
 RM = rm -f
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address -fno-omit-frame-pointer
 
 OBJ_DIR = obj
 

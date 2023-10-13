@@ -78,14 +78,14 @@ void	monitor_loop(t_table *table)
 					}
 					table->stop = 1;
 				}
-				exit(0) ;
+				return ;
 			}
 			if (table->max_eat != -1 && philo.meals_eaten >= table->max_eat)
 			{
 				pthread_mutex_lock(&table->end_mutex);
 				table->philosophers_done++;
 				if (table->philosophers_done >= table->n_p)
-					exit(0);
+					return ;
 				pthread_mutex_unlock(&table->end_mutex);
 			}
 			x ++;
