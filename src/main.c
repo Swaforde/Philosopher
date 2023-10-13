@@ -34,12 +34,27 @@ void	free_table(t_table *table)
 	free(table);
 }
 
-void	free_ressources(pthread_t *th, pthread_t *mo, t_table *ta, t_philo_context *co)
+void	end(pthread_t *th, pthread_t *mo, t_table *ta, t_philo_context *co)
 {
 	free (th);
 	free (mo);
 	free_table(ta);
 	free (co);
+}
+
+void	ct(t_table *ta, t_philo_context *da, pthread_t *th, pthread_t *mo)
+{
+	int	i;
+
+	i = 0;
+	pthread_create(mo, NULL, &monitor_routine, ta);
+	while (i < ta->n_p)
+	{
+		da[i].philosopher = &ta->philosophers[i];
+		da[i].table = ta;
+		pthread_create(&th[i], NULL, &philo_routine, &da[i]);
+		i ++;
+	}
 }
 
 int	main(int argc, char **argv)
@@ -63,18 +78,10 @@ int	main(int argc, char **argv)
 	philo_data = malloc(sizeof(t_philo_context) * 4);
 	if (!philo_data)
 		return (0);
-	pthread_create(monitor, NULL, &monitor_routine, table);
-	while (i < table->n_p)
-	{
-		philo_data[i].philosopher = &table->philosophers[i];
-		philo_data[i].table = table;
-		pthread_create(&threads[i], NULL, &philo_routine, &philo_data[i]);
-		i ++;
-	}
-	i = 0;
+	ct(table, philo_data, threads, monitor);
 	pthread_join(*monitor, NULL);
 	while (i < table->n_p)
 		pthread_join(threads[i++], NULL);
-	free_ressources(threads, monitor, table, philo_data);
+	end(threads, monitor, table, philo_data);
 	return (1);
 }

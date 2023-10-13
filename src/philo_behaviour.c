@@ -61,20 +61,10 @@ void	monitor_loop(t_table *table)
 		usleep(100);
 		while (i < table->n_p)
 		{
-			philo = table->philosophers[i++];
-			if (get_time() - philo.last_meal_time > table->time_to_die)
-			{
-				die_log(table, &philo);
+			philo = table->philosophers[i];
+			if (monitor_utils(&philo, table) == 0)
 				return ;
-			}
-			if (table->max_eat != -1 && philo.meals_eaten >= table->max_eat)
-			{
-				pthread_mutex_lock(&table->end_mutex);
-				table->philosophers_done++;
-				if (table->philosophers_done >= table->n_p)
-					return ;
-				pthread_mutex_unlock(&table->end_mutex);
-			}
+			i ++;
 		}
 		i = 0;
 	}

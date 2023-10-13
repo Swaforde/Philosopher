@@ -14,6 +14,24 @@
 #include <sys/time.h>
 #include <stdio.h>
 
+int	monitor_utils(t_philosopher *philo, t_table *table)
+{
+	if (get_time() - philo->last_meal_time > table->time_to_die)
+	{
+		die_log(table, philo);
+		return (0);
+	}
+	if (table->max_eat != -1 && philo->meals_eaten >= table->max_eat)
+	{
+		pthread_mutex_lock(&table->end_mutex);
+		table->philosophers_done++;
+		if (table->philosophers_done >= table->n_p)
+			return (0);
+		pthread_mutex_unlock(&table->end_mutex);
+	}
+	return (1);
+}
+
 long long	get_time(void)
 {
 	struct timeval	ct;
