@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-t_table	*init_table (int argc, char **argv)
+t_table	*init_table(int argc, char **argv)
 {
 	t_table	*table;
 	int		i;

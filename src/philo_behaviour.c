@@ -43,19 +43,18 @@ void	eat(t_philosopher *philosopher, t_table *table)
 
 void	sleep_and_think(t_philosopher *philosopher, t_table *table)
 {
-	if (table->stop != 1) {
+	if (table->stop != 1)
 		log_action(philosopher, "is sleeping", table);
-	}
 	usleep(table->time_to_sleep * 1000);
-	if (table->stop != 1) {
+	if (table->stop != 1)
 		log_action(philosopher, "is thinking", table);
-	}
 }
 
 void	monitor_loop(t_table *table)
 {
-	int i;
-	int x;
+	t_philosopher	philo;
+	int				i;
+	int				x;
 
 	i = 0;
 	x = 0;
@@ -64,13 +63,14 @@ void	monitor_loop(t_table *table)
 		usleep(100);
 		while (x < table->n_p)
 		{
-			t_philosopher philo = table->philosophers[x];
-
+			philo = table->philosophers[x];
 			if (get_time() - philo.last_meal_time > table->time_to_die)
 			{
-				if (table->stop == 0) {
+				if (table->stop == 0)
+				{
 					log_action(&philo, "died", table);
-					while (i < table->n_p) {
+					while (i < table->n_p)
+					{
 						table->philosophers[i].died = 1;
 						i ++;
 					}
@@ -111,7 +111,8 @@ void	*philo_routine(void *arg)
 	philosopher = context->philosopher;
 	table = context->table;
 	philosopher->last_meal_time = get_time();
-	while (philosopher->died != 1 && (philosopher->meals_eaten < table->max_eat || table->max_eat == -1))
+	while (philosopher->died != 1 && (philosopher->meals_eaten < \
+		table->max_eat || table->max_eat == -1))
 	{
 		eat(philosopher, table);
 		sleep_and_think(philosopher, table);
