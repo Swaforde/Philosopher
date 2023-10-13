@@ -3,7 +3,7 @@ SRCS = src/main.c src/init.c src/log.c src/philo_behaviour.c src/utils.c
 OBJS = $(addprefix obj/, $(notdir $(SRCS:.c=.o)))
 CC = gcc
 RM = rm -f
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 OBJ_DIR = obj
 
@@ -12,7 +12,7 @@ OBJ_DIR = obj
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(OBJS) $(CFLAGS) -o $(NAME) -G3
+	$(CC) $(OBJS) $(CFLAGS) -o $(NAME)
 
 $(OBJ_DIR)/%.o : src/%.c
 	@mkdir -p $(OBJ_DIR)

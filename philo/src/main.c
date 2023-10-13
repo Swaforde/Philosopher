@@ -26,7 +26,7 @@ int	main(int argc, char **argv)
 	table = init_table(argc, argv);
 	threads = malloc(sizeof(pthread_t) * table->n_p);
 	monitor = malloc(sizeof(pthread_t));
-	philo_data = malloc(sizeof(t_philo_context) * table->n_p);
+	philo_data = malloc(sizeof(t_philo_context) * 4);
 	if (!threads || !philo_data || !monitor)
 		exit(1);
 	pthread_create(monitor, NULL, &monitor_routine, table);
@@ -35,7 +35,6 @@ int	main(int argc, char **argv)
 		philo_data[i].philosopher = &table->philosophers[i];
 		philo_data[i].table = table;
 		pthread_create(&threads[i], NULL, &philo_routine, &philo_data[i]);
-		//pthread_create(&monitor[i], NULL, &monitor_routine, &philo_data[i]);
 		i ++;
 	}
 	i = 0;
@@ -43,7 +42,6 @@ int	main(int argc, char **argv)
 	while (i < table->n_p)
 	{
 		pthread_join(threads[i], NULL);
-		//pthread_join(monitor[i], NULL);
 		i ++;
 	}
 	exit(0);
