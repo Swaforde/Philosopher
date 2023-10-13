@@ -22,6 +22,10 @@ int	main(int argc, char **argv)
 	pthread_t		*monitor;
 	t_philo_context	*philo_data;
 
+
+	if (arg_check(argc, argv) == 0) {
+		return (0);
+	}
 	i = 0;
 	table = init_table(argc, argv);
 	threads = malloc(sizeof(pthread_t) * table->n_p);
