@@ -12,14 +12,8 @@
 
 #include "philo.h"
 
-t_table	*init_table(int argc, char **argv)
+void	set_value(t_table *table, char **argv)
 {
-	t_table	*table;
-	int		i;
-
-	table = malloc(sizeof(t_table));
-	if (!table)
-		return (NULL);
 	table->stop = 0;
 	table->start_time = get_time();
 	table->n_p = ft_atoi(argv[1]);
@@ -27,16 +21,14 @@ t_table	*init_table(int argc, char **argv)
 	table->time_to_eat = ft_atoi(argv[3]);
 	table->time_to_sleep = ft_atoi(argv[4]);
 	table->start_time = get_time();
-	pthread_mutex_init(&table->end_mutex, NULL);
 	table->philosophers_done = 0;
-	if (argc == 6)
-		table->max_eat = ft_atoi(argv[5]);
-	else
-		table->max_eat = -1;
-	table->philosophers = malloc(sizeof(t_philosopher) * table->n_p);
-	table->forks = malloc(sizeof(t_fork) * table->n_p);
-	if (!table->philosophers || !table->forks)
-		return (NULL);
+	pthread_mutex_init(&table->end_mutex, NULL);
+}
+
+void	set_philo_value(t_table *table)
+{
+	int	i;
+
 	i = 0;
 	while (i < table->n_p)
 	{
@@ -49,5 +41,25 @@ t_table	*init_table(int argc, char **argv)
 		pthread_mutex_init(&table->forks[i].mutex, NULL);
 		i ++;
 	}
+}
+
+t_table	*init_table(int argc, char **argv)
+{
+	t_table	*table;
+	int		i;	
+
+	table = malloc(sizeof(t_table));
+	if (!table)
+		return (NULL);
+	set_value(table, argv);
+	if (argc == 6)
+		table->max_eat = ft_atoi(argv[5]);
+	else
+		table->max_eat = -1;
+	table->philosophers = malloc(sizeof(t_philosopher) * table->n_p);
+	table->forks = malloc(sizeof(t_fork) * table->n_p);
+	if (!table->philosophers || !table->forks)
+		return (NULL);
+	set_philo_value(table);
 	return (table);
 }

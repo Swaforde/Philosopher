@@ -79,3 +79,17 @@ int	arg_check(int argc, char **argv)
 	}
 	return (1);
 }
+
+void	die_log(t_table *table, t_philosopher *philo)
+{
+	int	i;
+
+	i = 0;
+	if (table->stop == 0)
+	{
+		log_action(philo, "died", table);
+		while (i < table->n_p)
+			table->philosophers[i++].died = 1;
+		table->stop = 1;
+	}
+}

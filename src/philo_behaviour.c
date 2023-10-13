@@ -54,28 +54,17 @@ void	monitor_loop(t_table *table)
 {
 	t_philosopher	philo;
 	int				i;
-	int				x;
 
 	i = 0;
-	x = 0;
 	while (1)
 	{
 		usleep(100);
-		while (x < table->n_p)
+		while (i < table->n_p)
 		{
-			philo = table->philosophers[x];
+			philo = table->philosophers[i++];
 			if (get_time() - philo.last_meal_time > table->time_to_die)
 			{
-				if (table->stop == 0)
-				{
-					log_action(&philo, "died", table);
-					while (i < table->n_p)
-					{
-						table->philosophers[i].died = 1;
-						i ++;
-					}
-					table->stop = 1;
-				}
+				die_log(table, &philo);
 				return ;
 			}
 			if (table->max_eat != -1 && philo.meals_eaten >= table->max_eat)
@@ -86,9 +75,8 @@ void	monitor_loop(t_table *table)
 					return ;
 				pthread_mutex_unlock(&table->end_mutex);
 			}
-			x ++;
 		}
-		x = 0;
+		i = 0;
 	}
 }
 

@@ -27,10 +27,10 @@ long long	get_time_since_start(t_table *table)
 	return (get_time() - table->start_time);
 }
 
-void	log_action(t_philosopher *philosopher, const char *action, t_table *table)
+void	log_action(t_philosopher *ph, const char *action, t_table *table)
 {
 	long long	timestamp;
 
 	timestamp = get_time_since_start(table);
-	printf("%lldms %d %s\n", timestamp, philosopher->id, action);
+	printf("%lldms %d %s\n", timestamp, ph->id, action);
 }

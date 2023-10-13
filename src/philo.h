@@ -70,5 +70,6 @@ int			ft_atoi(const char *str);
 void		log_action(t_philosopher *philosopher, const char *action, t_table *table);
 t_table		*init_table(int argc, char **argv);
 int			arg_check(int argc, char **argv);
+void		die_log(t_table *table, t_philosopher *philo);
 
 #endif

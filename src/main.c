@@ -34,6 +34,14 @@ void	free_table(t_table *table)
 	free(table);
 }
 
+void	free_ressources(pthread_t *th, pthread_t *mo, t_table *ta, t_philo_context *co)
+{
+	free (th);
+	free (mo);
+	free_table(ta);
+	free (co);
+}
+
 int	main(int argc, char **argv)
 {
 	int				i;
@@ -66,13 +74,7 @@ int	main(int argc, char **argv)
 	i = 0;
 	pthread_join(*monitor, NULL);
 	while (i < table->n_p)
-	{
-		pthread_join(threads[i], NULL);
-		i ++;
-	}
-	free (threads);
-	free (monitor);
-	free_table(table);
-	free (philo_data);
+		pthread_join(threads[i++], NULL);
+	free_ressources(threads, monitor, table, philo_data);
 	return (1);
 }
