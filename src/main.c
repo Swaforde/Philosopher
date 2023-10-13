@@ -48,10 +48,14 @@ int	main(int argc, char **argv)
 	i = 0;
 	table = init_table(argc, argv);
 	threads = malloc(sizeof(pthread_t) * table->n_p);
+	if (!threads)
+		return (0);
 	monitor = malloc(sizeof(pthread_t));
+	if (!monitor)
+		return (0);
 	philo_data = malloc(sizeof(t_philo_context) * 4);
-	if (!threads || !philo_data || !monitor)
-		exit(1);
+	if (!philo_data)
+		return (0);
 	pthread_create(monitor, NULL, &monitor_routine, table);
 	while (i < table->n_p)
 	{

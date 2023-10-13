@@ -12,36 +12,34 @@
 
 #include "philo.h"
 
-void eat(t_philosopher *philosopher, t_table *table)
+void	eat(t_philosopher *philosopher, t_table *table)
 {
-    if (philosopher->id % 2 != 0)
-	{    
-        pthread_mutex_lock(&philosopher->left_fork->mutex);
-        if (table->stop != 1)
-            log_action(philosopher, "has taken a fork", table);
-        pthread_mutex_lock(&philosopher->right_fork->mutex);
-        if (table->stop != 1)
-            log_action(philosopher, "has taken a fork", table);
-    } else
+	if (philosopher->id % 2 != 0)
 	{
-        pthread_mutex_lock(&philosopher->right_fork->mutex);
-        if (table->stop != 1)
-            log_action(philosopher, "has taken a fork", table);
-        pthread_mutex_lock(&philosopher->left_fork->mutex);
-        if (table->stop != 1)
-            log_action(philosopher, "has taken a fork", table);
-    }
-    if (table->stop != 1)
-        log_action(philosopher, "is eating", table);
-    usleep(table->time_to_eat * 1000);
-    philosopher->last_meal_time = get_time();
-    pthread_mutex_unlock(&philosopher->left_fork->mutex);
-    pthread_mutex_unlock(&philosopher->right_fork->mutex);
-    philosopher->meals_eaten++;
+		pthread_mutex_lock(&philosopher->left_fork->mutex);
+		if (table->stop != 1)
+			log_action(philosopher, "has taken a fork", table);
+		pthread_mutex_lock(&philosopher->right_fork->mutex);
+		if (table->stop != 1)
+			log_action(philosopher, "has taken a fork", table);
+	}
+	else
+	{
+		pthread_mutex_lock(&philosopher->right_fork->mutex);
+		if (table->stop != 1)
+			log_action(philosopher, "has taken a fork", table);
+		pthread_mutex_lock(&philosopher->left_fork->mutex);
+		if (table->stop != 1)
+			log_action(philosopher, "has taken a fork", table);
+	}
+	if (table->stop != 1)
+		log_action(philosopher, "is eating", table);
+	usleep(table->time_to_eat * 1000);
+	philosopher->last_meal_time = get_time();
+	pthread_mutex_unlock(&philosopher->left_fork->mutex);
+	pthread_mutex_unlock(&philosopher->right_fork->mutex);
+	philosopher->meals_eaten++;
 }
-
-
-
 
 void	sleep_and_think(t_philosopher *philosopher, t_table *table)
 {
