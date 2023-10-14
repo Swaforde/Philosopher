@@ -57,11 +57,12 @@ typedef struct s_philo_context {
 void		*philo_routine(void *arg);
 void		*monitor_routine(void *arg);
 long long	get_time(void);
-int			ft_atoi(const char *str);
+long long			ft_atoi(const char *str);
 void		log_action(t_philosopher *philo, const char *ac, t_table *ta);
 t_table		*init_table(int argc, char **argv);
 int			arg_check(int argc, char **argv);
 void		die_log(t_table *table, t_philosopher *philo);
 int			monitor_utils(t_philosopher *philo, t_table *table);
+int			custom_sleep(int ms, t_philosopher *philo, t_table *table);
 
 #endif

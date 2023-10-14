@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-void	eat(t_philosopher *philosopher, t_table *table)
+int	eat(t_philosopher *philosopher, t_table *table)
 {
 	if (philosopher->id % 2 != 0)
 	{
@@ -33,21 +33,49 @@ void	eat(t_philosopher *philosopher, t_table *table)
 			log_action(philosopher, "has taken a fork", table);
 	}
 	if (table->stop != 1)
+	{
 		log_action(philosopher, "is eating", table);
-	usleep(table->time_to_eat * 1000);
-	philosopher->last_meal_time = get_time();
+		philosopher->last_meal_time = get_time();
+		if(custom_sleep(table->time_to_eat, philosopher, table))
+			return 1;
+	}
+	if(custom_sleep(table->time_to_eat, philosopher, table))
+		return 1;
 	pthread_mutex_unlock(&philosopher->left_fork->mutex);
 	pthread_mutex_unlock(&philosopher->right_fork->mutex);
 	philosopher->meals_eaten++;
+	return 0;
 }
 
-void	sleep_and_think(t_philosopher *philosopher, t_table *table)
+int	sleep_and_think(t_philosopher *philosopher, t_table *table)
 {
 	if (table->stop != 1)
 		log_action(philosopher, "is sleeping", table);
-	usleep(table->time_to_sleep * 1000);
+	if(custom_sleep(table->time_to_sleep, philosopher, table))
+		return 1;
 	if (table->stop != 1)
 		log_action(philosopher, "is thinking", table);
+	return 0;
+}
+
+int	custom_sleep(int ms, t_philosopher *philo, t_table *table)
+{
+	long long start;
+	long long end;
+
+	start = get_time();
+	end = get_time();
+	while (end - start < ms)
+	{
+		usleep(1);
+		end = get_time();
+		if (end - philo->last_meal_time > table->time_to_die)
+		{
+			philo->died = 1;
+			return 1;
+		}
+	}
+	return 0;
 }
 
 void	monitor_loop(t_table *table)
@@ -55,18 +83,27 @@ void	monitor_loop(t_table *table)
 	t_philosopher	philo;
 	int				i;
 
-	i = 0;
+	usleep(100);
 	while (1)
 	{
-		usleep(100);
+		i = 0;
 		while (i < table->n_p)
 		{
-			philo = table->philosophers[i];
-			if (monitor_utils(&philo, table) == 0)
+			t_philosopher *philo = &table->philosophers[i++];
+			if (philo->died == 1)
+			{
+				die_log(table, philo);
 				return ;
-			i ++;
+			}
+			if (table->max_eat != -1 && philo->meals_eaten >= table->max_eat)
+			{
+				pthread_mutex_lock(&table->end_mutex);
+				table->philosophers_done++;
+				if (table->philosophers_done >= table->n_p)
+					return ;
+				pthread_mutex_unlock(&table->end_mutex);
+			}
 		}
-		i = 0;
 	}
 }
 
@@ -92,8 +129,10 @@ void	*philo_routine(void *arg)
 	while (philosopher->died != 1 && (philosopher->meals_eaten < \
 		table->max_eat || table->max_eat == -1))
 	{
-		eat(philosopher, table);
-		sleep_and_think(philosopher, table);
+		if(eat(philosopher, table))
+			break;
+		if(sleep_and_think(philosopher, table))
+			break;
 	}
 	return (NULL);
 }

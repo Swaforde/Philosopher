@@ -12,10 +12,10 @@
 
 #include "philo.h"
 
-int	ft_atoi(const char *str)
+long long	ft_atoi(const char *str)
 {
 	int	i;
-	int	return_value;
+	long long	return_value;
 	int	is_negative;
 
 	i = 0;

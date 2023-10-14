@@ -75,7 +75,7 @@ int	main(int argc, char **argv)
 	monitor = malloc(sizeof(pthread_t));
 	if (!monitor)
 		return (0);
-	philo_data = malloc(sizeof(t_philo_context) * 4);
+	philo_data = malloc(sizeof(t_philo_context) * table->n_p);
 	if (!philo_data)
 		return (0);
 	ct(table, philo_data, threads, monitor);

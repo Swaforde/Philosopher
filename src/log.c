@@ -16,7 +16,7 @@
 
 int	monitor_utils(t_philosopher *philo, t_table *table)
 {
-	if (get_time() - philo->last_meal_time > table->time_to_die)
+	if (philo->died)
 	{
 		die_log(table, philo);
 		return (0);
