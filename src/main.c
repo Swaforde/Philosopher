@@ -80,8 +80,10 @@ int	main(int argc, char **argv)
 		return (0);
 	ct(table, philo_data, threads, monitor);
 	pthread_join(*monitor, NULL);
-	while (i < table->n_p)
-		pthread_join(threads[i++], NULL);
+	while (i < table->n_p) { 
+		pthread_join(threads[i], NULL);
+		i++;
+	}
 	end(threads, monitor, table, philo_data);
 	return (1);
 }

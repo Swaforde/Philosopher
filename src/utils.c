@@ -88,8 +88,9 @@ void	die_log(t_table *table, t_philosopher *philo)
 	if (table->stop == 0)
 	{
 		log_action(philo, "died", table);
-		while (i < table->n_p)
-			table->philosophers[i++].died = 1;
-		table->stop = 1;
+		while (i < table->n_p) {
+			table->philosophers[i].died = 1;
+			i ++;
+		}
 	}
 }
