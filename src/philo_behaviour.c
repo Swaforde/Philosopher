@@ -70,8 +70,8 @@ int	custom_sleep(int ms, t_philosopher *philo, t_table *table)
 		if (end - philo->last_meal_time > table->time_to_die)
 		{
 			philo->died = 1;
-			    pthread_mutex_unlock(&philo->left_fork->mutex);
-    			pthread_mutex_unlock(&philo->right_fork->mutex);
+			pthread_mutex_unlock(&philo->left_fork->mutex);
+			pthread_mutex_unlock(&philo->right_fork->mutex);
 			return 1;
 		}
 	}
