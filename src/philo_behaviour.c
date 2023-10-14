@@ -65,7 +65,7 @@ int	custom_sleep(int ms, t_philosopher *philo, t_table *table)
 	end = get_time();
 	while (end - start < ms)
 	{
-		usleep(1);
+		usleep(20);
 		end = get_time();
 		if (end - philo->last_meal_time > table->time_to_die)
 		{
