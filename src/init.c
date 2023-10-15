@@ -23,6 +23,7 @@ void	set_value(t_table *table, char **argv)
 	table->start_time = get_time();
 	table->philosophers_done = 0;
 	pthread_mutex_init(&table->end_mutex, NULL);
+	pthread_mutex_init(&table->log_mutex, NULL);
 }
 
 void	set_philo_value(t_table *table)

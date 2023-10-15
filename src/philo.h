@@ -39,6 +39,7 @@ typedef struct s_table {
 	int				stop;
 	int				philosophers_done;
 	pthread_mutex_t	end_mutex;
+	pthread_mutex_t	log_mutex;
 	int				n_p;
 	long long		time_to_die;
 	long long		time_to_eat;

@@ -77,6 +77,8 @@ int	arg_check(int argc, char **argv)
 		b = 0;
 		i++;
 	}
+	if (ft_atoi(argv[1]) < 1)
+		return (0);
 	return (1);
 }
 
@@ -85,12 +87,11 @@ void	die_log(t_table *table, t_philosopher *philo)
 	int	i;
 
 	i = 0;
-	if (table->stop == 0)
-	{
-		log_action(philo, "died", table);
-		while (i < table->n_p) {
-			table->philosophers[i].died = 1;
-			i ++;
+	while (i < table->n_p) {
+		if (table->philosophers[i].died == 1) {
+			log_action(&table->philosophers[i], "died", table);
+			break;
 		}
+		i ++;
 	}
 }

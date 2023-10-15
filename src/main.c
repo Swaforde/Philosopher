@@ -31,6 +31,7 @@ void	free_table(t_table *table)
 	if (table->philosophers)
 		free(table->philosophers);
 	pthread_mutex_destroy(&table->end_mutex);
+	pthread_mutex_destroy(&table->log_mutex);
 	free(table);
 }
 

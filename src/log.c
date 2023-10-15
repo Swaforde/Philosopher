@@ -49,6 +49,15 @@ void	log_action(t_philosopher *ph, const char *action, t_table *table)
 {
 	long long	timestamp;
 
+	if (table->stop == 1 && ph->died == 0) {
+		return ;
+	}
+	pthread_mutex_lock(&table->log_mutex);
+	if (table->stop == 1 && ph->died == 0) {
+		pthread_mutex_unlock(&table->log_mutex);
+		return ;
+	}
 	timestamp = get_time_since_start(table);
 	printf("%lldms %d %s\n", timestamp, ph->id, action);
+	pthread_mutex_unlock(&table->log_mutex);
 }
