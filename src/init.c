@@ -6,7 +6,7 @@
 /*   By: tbouvera <tbouvera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:52:11 by tbouvera          #+#    #+#             */
-/*   Updated: 2023/07/21 14:25:44 by tbouvera         ###   ########.fr       */
+/*   Updated: 2023/10/16 12:25:35 by tbouvera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	set_value(t_table *table, char **argv)
 	pthread_mutex_init(&table->end_mutex, NULL);
 	pthread_mutex_init(&table->log_mutex, NULL);
 	pthread_mutex_init(&table->check_mutex, NULL);
+	pthread_mutex_init(&table->order_mutex, NULL);
 }
 
 void	set_philo_value(t_table *table)

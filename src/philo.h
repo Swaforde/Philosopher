@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbouvera <tbouvera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:52:11 by tbouvera          #+#    #+#             */
-/*   Updated: 2023/07/21 14:25:44 by tbouvera         ###   ########.fr       */
+/*   Updated: 2023/10/16 12:25:17 by tbouvera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_table {
 	int				philosophers_done;
 	pthread_mutex_t	end_mutex;
 	pthread_mutex_t	log_mutex;
+	pthread_mutex_t	order_mutex;
 	pthread_mutex_t check_mutex;
 	int				n_p;
 	long long		time_to_die;

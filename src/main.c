@@ -6,7 +6,7 @@
 /*   By: tbouvera <tbouvera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:52:11 by tbouvera          #+#    #+#             */
-/*   Updated: 2023/07/21 14:25:44 by tbouvera         ###   ########.fr       */
+/*   Updated: 2023/10/16 14:31:52 by tbouvera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	free_table(t_table *table)
 	pthread_mutex_destroy(&table->end_mutex);
 	pthread_mutex_destroy(&table->check_mutex);
 	pthread_mutex_destroy(&table->log_mutex);
+	pthread_mutex_destroy(&table->order_mutex);
 	free(table);
 }
 
