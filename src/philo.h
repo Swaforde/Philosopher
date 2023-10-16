@@ -69,6 +69,6 @@ t_table		*init_table(int argc, char **argv);
 int			arg_check(int argc, char **argv);
 void		die_log(t_table *table, t_philosopher *philo);
 int			monitor_utils(t_philosopher *philo, t_table *table);
-int			custom_sleep(int ms, t_philosopher *philo, t_table *table);
+int		custom_sleep(int ms, t_philosopher *philo, t_table *table);
 
 #endif
