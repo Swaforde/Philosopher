@@ -6,7 +6,7 @@
 /*   By: tbouvera <tbouvera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:52:11 by tbouvera          #+#    #+#             */
-/*   Updated: 2023/10/16 14:56:36 by tbouvera         ###   ########.fr       */
+/*   Updated: 2023/10/16 15:02:07 by tbouvera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 int	eat(t_philosopher *philosopher, t_table *table)
 {
-	//if (philosopher->id % 2 != 0)
-	//{
+	//if (philosopher->id % 2 != 0
 	pthread_mutex_lock(&philosopher->left_fork->mutex);
 	log_action(philosopher, "has taken a fork", table);
 	if (table->n_p == 1) {
