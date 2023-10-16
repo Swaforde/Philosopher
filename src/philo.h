@@ -33,6 +33,9 @@ typedef struct s_philosopher {
 	t_fork			*left_fork;
 	t_fork			*right_fork;
 	t_table			*table;
+    int has_left_fork;
+    int has_right_fork;
+
 }		t_philosopher;
 
 typedef struct s_table {
@@ -40,6 +43,7 @@ typedef struct s_table {
 	int				philosophers_done;
 	pthread_mutex_t	end_mutex;
 	pthread_mutex_t	log_mutex;
+	pthread_mutex_t check_mutex;
 	int				n_p;
 	long long		time_to_die;
 	long long		time_to_eat;
