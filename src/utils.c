@@ -14,9 +14,9 @@
 
 long long	ft_atoi(const char *str)
 {
-	int	i;
+	int			i;
 	long long	return_value;
-	int	is_negative;
+	int			is_negative;
 
 	i = 0;
 	return_value = 0;
@@ -82,15 +82,17 @@ int	arg_check(int argc, char **argv)
 	return (1);
 }
 
-void	die_log(t_table *table, t_philosopher *philo)
+void	die_log(t_table *table)
 {
 	int	i;
 
 	i = 0;
-	while (i < table->n_p) {
-		if (table->philosophers[i].died == 1) {
+	while (i < table->n_p)
+	{
+		if (table->philosophers[i].died == 1)
+		{
 			log_action(&table->philosophers[i], "died", table);
-			break;
+			break ;
 		}
 		i ++;
 	}

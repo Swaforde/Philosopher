@@ -33,9 +33,6 @@ typedef struct s_philosopher {
 	t_fork			*left_fork;
 	t_fork			*right_fork;
 	t_table			*table;
-    int has_left_fork;
-    int has_right_fork;
-
 }		t_philosopher;
 
 typedef struct s_table {
@@ -43,8 +40,7 @@ typedef struct s_table {
 	int				philosophers_done;
 	pthread_mutex_t	end_mutex;
 	pthread_mutex_t	log_mutex;
-	pthread_mutex_t	order_mutex;
-	pthread_mutex_t check_mutex;
+	pthread_mutex_t	check_mutex;
 	int				n_p;
 	long long		time_to_die;
 	long long		time_to_eat;
@@ -63,12 +59,12 @@ typedef struct s_philo_context {
 void		*philo_routine(void *arg);
 void		*monitor_routine(void *arg);
 long long	get_time(void);
-long long			ft_atoi(const char *str);
+long long	ft_atoi(const char *str);
 void		log_action(t_philosopher *philo, const char *ac, t_table *ta);
 t_table		*init_table(int argc, char **argv);
 int			arg_check(int argc, char **argv);
-void		die_log(t_table *table, t_philosopher *philo);
+void		die_log(t_table *table);
 int			monitor_utils(t_philosopher *philo, t_table *table);
-int		custom_sleep(int ms, t_philosopher *philo, t_table *table);
+int			custom_sleep(int ms, t_philosopher *philo, t_table *table);
 
 #endif

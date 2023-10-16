@@ -25,7 +25,6 @@ void	set_value(t_table *table, char **argv)
 	pthread_mutex_init(&table->end_mutex, NULL);
 	pthread_mutex_init(&table->log_mutex, NULL);
 	pthread_mutex_init(&table->check_mutex, NULL);
-	pthread_mutex_init(&table->order_mutex, NULL);
 }
 
 void	set_philo_value(t_table *table)
@@ -38,8 +37,6 @@ void	set_philo_value(t_table *table)
 		table->philosophers[i].meals_eaten = 0;
 		table->philosophers[i].died = 0;
 		table->philosophers[i].id = i + 1;
-		table->philosophers[i].has_left_fork = 0;
-		table->philosophers[i].has_right_fork = 0;
 		table->philosophers[i].last_meal_time = 0;
 		table->philosophers[i].left_fork = &table->forks[i];
 		table->philosophers[i].right_fork = &table->forks[(i + 1) % table->n_p];

@@ -33,7 +33,6 @@ void	free_table(t_table *table)
 	pthread_mutex_destroy(&table->end_mutex);
 	pthread_mutex_destroy(&table->check_mutex);
 	pthread_mutex_destroy(&table->log_mutex);
-	pthread_mutex_destroy(&table->order_mutex);
 	free(table);
 }
 
@@ -84,10 +83,8 @@ int	main(int argc, char **argv)
 		return (0);
 	ct(table, philo_data, threads, monitor);
 	pthread_join(*monitor, NULL);
-	while (i < table->n_p) { 
-		pthread_join(threads[i], NULL);
-		i++;
-	}
+	while (i < table->n_p)
+		pthread_join(threads[i++], NULL);
 	end(threads, monitor, table, philo_data);
 	return (1);
 }
