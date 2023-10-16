@@ -6,7 +6,7 @@
 /*   By: tbouvera <tbouvera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:52:11 by tbouvera          #+#    #+#             */
-/*   Updated: 2023/10/16 14:33:50 by tbouvera         ###   ########.fr       */
+/*   Updated: 2023/10/16 14:56:36 by tbouvera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,33 @@
 
 int	eat(t_philosopher *philosopher, t_table *table)
 {
-	if (philosopher->id % 2 != 0)
-	{
-		pthread_mutex_lock(&philosopher->left_fork->mutex);
-		philosopher->has_left_fork = 1;
-		log_action(philosopher, "has taken a fork", table);
-		if (table->n_p == 1) {
-			custom_sleep(table->time_to_die+1, philosopher, table);
-			pthread_mutex_unlock(&philosopher->left_fork->mutex);
-			return 1;
-		}
-		pthread_mutex_lock(&philosopher->right_fork->mutex);
+	//if (philosopher->id % 2 != 0)
+	//{
+	pthread_mutex_lock(&philosopher->left_fork->mutex);
+	log_action(philosopher, "has taken a fork", table);
+	if (table->n_p == 1) {
+		custom_sleep(table->time_to_die+1, philosopher, table);
+		pthread_mutex_unlock(&philosopher->left_fork->mutex);
+		return 1;
+	}
+	pthread_mutex_lock(&philosopher->right_fork->mutex);
+	log_action(philosopher, "has taken a fork", table);
+	//}
+	//else
+	//{
+		/*pthread_mutex_lock(&philosopher->right_fork->mutex);
 		philosopher->has_right_fork = 1;
 		log_action(philosopher, "has taken a fork", table);
-	}
-	else
-	{
-		pthread_mutex_lock(&philosopher->right_fork->mutex);
-		philosopher->has_right_fork = 1;
-		log_action(philosopher, "has taken a fork", table);
 		pthread_mutex_lock(&philosopher->left_fork->mutex);
 		philosopher->has_left_fork = 1;
-		log_action(philosopher, "has taken a fork", table);
-	}
-	philosopher->last_meal_time = get_time();
+		log_action(philosopher, "has taken a fork", table);*/
+	//}
 	log_action(philosopher, "is eating", table);	
 	if(custom_sleep(table->time_to_eat, philosopher, table))
 		return 1;
+	philosopher->last_meal_time = get_time();
 	pthread_mutex_unlock(&philosopher->right_fork->mutex);
-	philosopher->has_right_fork = 0;
 	pthread_mutex_unlock(&philosopher->left_fork->mutex);
-	philosopher->has_left_fork = 0;
 	philosopher->meals_eaten++;
 	if (philosopher->meals_eaten >= table->max_eat && table->max_eat != -1) {
 		table->philosophers_done++;
@@ -98,16 +94,8 @@ int	custom_sleep(int ms, t_philosopher *philo, t_table *table)
 		end = get_time();
 		if (end - philo->last_meal_time > table->time_to_die)
 		{
-			if (philo->has_left_fork)
-			{
-				pthread_mutex_unlock(&philo->left_fork->mutex);
-				philo->has_left_fork = 0;
-			}
-			if (philo->has_right_fork)
-			{
-				pthread_mutex_unlock(&philo->right_fork->mutex);
-				philo->has_right_fork = 0;
-			}
+			pthread_mutex_unlock(&philo->left_fork->mutex);
+			pthread_mutex_unlock(&philo->right_fork->mutex);
 			philo->died = 1;
 			table->stop = 1;
 			return 1;

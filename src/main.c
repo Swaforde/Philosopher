@@ -6,7 +6,7 @@
 /*   By: tbouvera <tbouvera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:52:11 by tbouvera          #+#    #+#             */
-/*   Updated: 2023/10/16 14:31:52 by tbouvera         ###   ########.fr       */
+/*   Updated: 2023/10/16 14:46:47 by tbouvera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	ct(t_table *ta, t_philo_context *da, pthread_t *th, pthread_t *mo)
 		da[i].philosopher = &ta->philosophers[i];
 		da[i].table = ta;
 		pthread_create(&th[i], NULL, &philo_routine, &da[i]);
+		usleep(100);
 		i ++;
 	}
 }
