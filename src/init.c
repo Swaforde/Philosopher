@@ -6,7 +6,7 @@
 /*   By: tbouvera <tbouvera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:52:11 by tbouvera          #+#    #+#             */
-/*   Updated: 2023/10/16 12:25:35 by tbouvera         ###   ########.fr       */
+/*   Updated: 2023/10/17 11:14:31 by tbouvera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	set_value(t_table *table, char **argv)
 	table->time_to_eat = ft_atoi(argv[3]);
 	table->time_to_sleep = ft_atoi(argv[4]);
 	table->start_time = get_time();
-	table->philosophers_done = 0;
+	table->philo_done = 0;
 	pthread_mutex_init(&table->end_mutex, NULL);
 	pthread_mutex_init(&table->log_mutex, NULL);
 	pthread_mutex_init(&table->check_mutex, NULL);

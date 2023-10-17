@@ -6,7 +6,7 @@
 /*   By: tbouvera <tbouvera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:52:11 by tbouvera          #+#    #+#             */
-/*   Updated: 2023/10/16 12:18:22 by tbouvera         ###   ########.fr       */
+/*   Updated: 2023/10/17 11:15:37 by tbouvera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ int	monitor_utils(t_philosopher *philo, t_table *table)
 	if (table->max_eat != -1 && philo->meals_eaten >= table->max_eat)
 	{
 		pthread_mutex_lock(&table->end_mutex);
-		table->philosophers_done++;
-		if (table->philosophers_done >= table->n_p)
+		table->philo_done++;
+		if (table->philo_done >= table->n_p)
 			return (0);
 		pthread_mutex_unlock(&table->end_mutex);
 	}

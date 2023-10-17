@@ -6,7 +6,7 @@
 /*   By: tbouvera <tbouvera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:52:11 by tbouvera          #+#    #+#             */
-/*   Updated: 2023/10/16 12:25:17 by tbouvera         ###   ########.fr       */
+/*   Updated: 2023/10/17 11:14:07 by tbouvera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef struct s_philosopher {
 
 typedef struct s_table {
 	int				stop;
-	int				philosophers_done;
+	int				philo_done;
 	pthread_mutex_t	end_mutex;
 	pthread_mutex_t	log_mutex;
 	pthread_mutex_t	check_mutex;
@@ -65,6 +65,7 @@ t_table		*init_table(int argc, char **argv);
 int			arg_check(int argc, char **argv);
 void		die_log(t_table *table);
 int			monitor_utils(t_philosopher *philo, t_table *table);
+int			custom_sleep(int ms, t_philosopher *philo, t_table *table);
 int			custom_sleep(int ms, t_philosopher *philo, t_table *table);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: tbouvera <tbouvera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:52:11 by tbouvera          #+#    #+#             */
-/*   Updated: 2023/10/16 15:02:07 by tbouvera         ###   ########.fr       */
+/*   Updated: 2023/10/17 11:14:21 by tbouvera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	eat(t_philosopher *philosopher, t_table *table)
 	philosopher->meals_eaten++;
 	if (philosopher->meals_eaten >= table->max_eat && table->max_eat != -1)
 	{
-		table->philosophers_done++;
+		table->philo_done++;
 		return (1);
 	}
 	return (0);
@@ -45,29 +45,6 @@ int	sleep_and_think(t_philosopher *philosopher, t_table *table)
 	if (custom_sleep(table->time_to_sleep, philosopher, table))
 		return (1);
 	log_action(philosopher, "is thinking", table);
-	return (0);
-}
-
-int	custom_sleep(int ms, t_philosopher *philo, t_table *table)
-{
-	long long	start;
-	long long	end;
-
-	start = get_time();
-	end = get_time();
-	while (end - start < ms)
-	{
-		end = get_time();
-		if (end - philo->last_meal_time > table->time_to_die)
-		{
-			pthread_mutex_unlock(&philo->left_fork->mutex);
-			pthread_mutex_unlock(&philo->right_fork->mutex);
-			philo->died = 1;
-			table->stop = 1;
-			return (1);
-		}
-		usleep(500);
-	}
 	return (0);
 }
 
@@ -89,7 +66,7 @@ void	monitor_loop(t_table *table)
 			pthread_mutex_unlock(&table->check_mutex);
 			return ;
 		}
-		if (table->philosophers_done >= table->n_p)
+		if (table->philo_done >= table->n_p)
 			return ;
 		pthread_mutex_unlock(&table->check_mutex);
 	}
@@ -116,7 +93,7 @@ void	*philo_routine(void *arg)
 	if (ph->id % 2 == 0)
 		usleep(100);
 	ph->last_meal_time = get_time();
-	while (table->stop == 0 && ph->died == 0 && table->philosophers_done != table->n_p)
+	while (table->stop == 0 && ph->died == 0 && table->philo_done != table->n_p)
 	{
 		if (eat(ph, table))
 			break ;

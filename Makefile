@@ -1,9 +1,9 @@
 NAME = philo
-SRCS = src/main.c src/init.c src/log.c src/philo_behaviour.c src/utils.c
+SRCS = src/main.c src/init.c src/log.c src/philo_behaviour.c src/utils.c src/philo_behaviour_2.c
 OBJS = $(addprefix obj/, $(notdir $(SRCS:.c=.o)))
 CC = gcc
 RM = rm -f
-CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror
 
 OBJ_DIR = obj
 
